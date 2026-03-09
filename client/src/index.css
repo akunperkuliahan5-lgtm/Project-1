@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #0a0a0a;
+  --secondary: #161616;
+  --accent: #b08d57;
+  --accent-glow: rgba(176, 141, 87, 0.3);
+  --text-main: #e0e0e0;
+  --text-muted: #888888;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--primary);
+  color: var(--text-main);
+  overflow-x: hidden;
+  margin: 0;
+}
+
+/* ===== Reveal Animation ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* ===== Navigation ===== */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link:hover {
+  color: var(--accent);
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--accent);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ===== Typography ===== */
+.section-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #d4af37 0%, #b08d57 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== Hero ===== */
+.hero-bg {
+  background-image: linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.88)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* ===== Service Cards ===== */
+.service-card {
+  background: var(--secondary);
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  border: 1px solid #222;
+}
+.service-card:hover {
+  background: #1a1a1a;
+  transform: translateY(-10px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow);
+}
+
+.service-number {
+  font-family: serif;
+  font-style: italic;
+  color: var(--accent);
+  opacity: 0.2;
+  font-size: 4rem;
+  line-height: 1;
+}
+
+/* ===== Checkbox / Why Choose Us ===== */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #fff;
+  padding: 8px 0;
+}
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(176, 141, 87, 0.1);
+  flex-shrink: 0;
+}
+.checkmark::after {
+  content: '✓';
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* ===== WhatsApp Box ===== */
+.wa-box {
+  background: #111;
+  border: 1px solid #222;
+  padding: 30px;
+  border-radius: 4px;
+}
+.wa-input {
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.wa-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ===== Phone Mockup ===== */
+.phone-mockup {
+  width: 280px;
+  height: 580px;
+  background: #000;
+  border-radius: 40px;
+  border: 6px solid #2a2a2a;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 50px 100px -20px rgba(0,0,0,1);
+}
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.phone-nav {
+  height: 4px;
+  width: 60px;
+  background: #222;
+  border-radius: 10px;
+  margin: 0 auto 15px;
+}
+.app-header {
+  background: var(--accent);
+  color: #000;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+.app-content-box {
+  height: 100%;
+  border: 1px solid #222;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+/* ===== Portfolio ===== */
+.portfolio-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #333;
+  transition: all 0.5s ease;
+}
+.portfolio-frame:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+.portfolio-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  filter: grayscale(40%) brightness(0.7);
+  transition: filter 0.5s ease, transform 0.8s ease;
+}
+.portfolio-frame:hover .portfolio-img {
+  filter: grayscale(0%) brightness(1);
+  transform: scale(1.05);
+}
+
+/* ===== Marquee ===== */
+.marquee-wrapper {
+  overflow: hidden;
+  display: flex;
+  user-select: none;
+  gap: 40px;
+  background: #050505;
+  padding: 40px 0;
+  border-top: 1px solid #111;
+  border-bottom: 1px solid #111;
+}
+.marquee-group {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 60px;
+  min-width: 100%;
+  animation: scroll-x 40s linear infinite;
+}
+.client-logo {
+  filter: grayscale(1) brightness(2) opacity(0.5);
+  transition: all 0.3s ease;
+}
+.client-logo:hover {
+  filter: grayscale(0) brightness(1) opacity(1);
+}
+@keyframes scroll-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+/* ===== Person / Team ===== */
+.person-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  background-color: #111;
+  overflow: hidden;
+  border: 1px solid #222;
+}
+.person-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) brightness(0.6);
+  transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.person-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  transition: all 0.4s ease;
+}
+.person-card:hover img {
+  filter: grayscale(0%) brightness(0.8);
+  transform: scale(1.05);
+}
+.person-card:hover .person-overlay {
+  background: linear-gradient(to top, rgba(176, 141, 87, 0.4), transparent);
+}
+
+/* ===== Blog Cards ===== */
+.blog-card {
+  background: #111;
+  transition: all 0.4s ease;
+  border: 1px solid #222;
+}
+.blog-card:hover {
+  border-color: var(--accent);
+  background: #161616;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* ===== Background Pattern ===== */
+.bg-pattern {
+  background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* ===== Step Circle ===== */
+.step-circle {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-weight: 700;
+  transition: all 0.3s ease;
+  background: rgba(176, 141, 87, 0.05);
+}
+.group:hover .step-circle {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* ===== Admin Utilities ===== */
+.admin-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.admin-input {
+  width: 100%;
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+.admin-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+select.admin-input option {
+  background: #111;
+}
+.admin-th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #444;
+}
+.admin-td {
+  padding: 14px 20px;
+  font-size: 13px;
+  color: #888;
+  vertical-align: middle;
+}

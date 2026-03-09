@@ -1,0 +1,16 @@
+{
+  "name": "kkn-server",
+  "version": "1.0.0",
+  "description": "KKN Nusantara Express.js + SQLite Backend",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "seed": "node db/seed.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

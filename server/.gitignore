@@ -1,0 +1,5 @@
+node_modules/
+kkn.sqlite
+kkn.sqlite-shm
+kkn.sqlite-wal
+.env
