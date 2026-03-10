@@ -4,6 +4,7 @@ import servicesRouter from './routes/services.js';
 import portfolioRouter from './routes/portfolio.js';
 import teamRouter from './routes/team.js';
 import blogRouter from './routes/blog.js';
+import clientsRouter from './routes/clients.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,11 +13,18 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Logger
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
 // Routes
 app.use('/api/services', servicesRouter);
 app.use('/api/portfolio', portfolioRouter);
 app.use('/api/team', teamRouter);
 app.use('/api/blog', blogRouter);
+app.use('/api/clients', clientsRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {

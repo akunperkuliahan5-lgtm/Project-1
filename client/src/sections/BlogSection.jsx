@@ -54,7 +54,7 @@ export default function BlogSection() {
   }, [items]);
 
   return (
-    <section id="blog" className="py-40 px-6 bg-black">
+    <section id="blog" className="py-24 px-6 bg-black">
       <div className="max-w-7xl mx-auto">
         <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
           <div>
@@ -68,7 +68,7 @@ export default function BlogSection() {
           </p>
         </div>
 
-        <div ref={gridRef} className="grid md:grid-cols-3 gap-6">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((blog) => (
             <BlogCard
               key={blog.id}

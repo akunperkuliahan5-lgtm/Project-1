@@ -50,6 +50,13 @@ db.exec(`
     content TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
+
+  CREATE TABLE IF NOT EXISTS clients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    logo_url TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
 
 export default db;

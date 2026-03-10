@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useAdminDialog } from './DialogContext';
 
-const API = 'http://localhost:3001/api/blog';
+const API = 'http://127.0.0.1:3001/api/blog';
 
 function Modal({ item, onClose, onSave }) {
+  const { showAlert } = useAdminDialog();
   const [form, setForm] = useState(
     item || { category: '', title: '', excerpt: '', content: '' }
   );
@@ -16,6 +18,7 @@ function Modal({ item, onClose, onSave }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     });
+    showAlert('Berhasil', `Artikel berhasil ${item ? 'diperbarui' : 'ditayangkan'}`, 'success');
     onSave();
   };
 
@@ -67,10 +70,18 @@ export default function BlogPage() {
   const load = () => fetch(API).then(r => r.json()).then(setItems);
   useEffect(() => { load(); }, []);
 
+  const { showConfirm, showAlert } = useAdminDialog();
+
   const handleDelete = async (id) => {
-    if (!confirm('Hapus artikel ini?')) return;
-    await fetch(`${API}/${id}`, { method: 'DELETE' });
-    load();
+    showConfirm(
+      'Konfirmasi Hapus',
+      'Hapus artikel blog ini?',
+      async () => {
+        await fetch(`${API}/${id}`, { method: 'DELETE' });
+        showAlert('Berhasil', 'Artikel telah dihapus', 'success');
+        load();
+      }
+    );
   };
 
   return (

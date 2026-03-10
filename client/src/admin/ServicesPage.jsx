@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useAdminDialog } from './DialogContext';
 
-const API = 'http://localhost:3001/api/services';
+const API = 'http://127.0.0.1:3001/api/services';
 const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20];
 
 // ===== Modal Component =====
 function Modal({ item, onClose, onSave }) {
+  const { showAlert } = useAdminDialog();
   const [form, setForm] = useState(
     item || { number: '', title: '', description: '', image_url: '' }
   );
@@ -18,6 +20,7 @@ function Modal({ item, onClose, onSave }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     });
+    showAlert('Berhasil', `Layanan berhasil ${item ? 'diperbarui' : 'ditambahkan'}`, 'success');
     onSave();
   };
 
@@ -134,10 +137,18 @@ export default function ServicesPage() {
   // Reset to page 1 whenever search or itemsPerPage changes
   useEffect(() => { setCurrentPage(1); }, [searchQuery, itemsPerPage]);
 
+  const { showConfirm, showAlert } = useAdminDialog();
+
   const handleDelete = async (id) => {
-    if (!confirm('Hapus layanan ini?')) return;
-    await fetch(`${API}/${id}`, { method: 'DELETE' });
-    load();
+    showConfirm(
+      'Konfirmasi Hapus',
+      'Apakah Anda yakin ingin menghapus layanan ini? Tindakan ini tidak dapat dibatalkan.',
+      async () => {
+        await fetch(`${API}/${id}`, { method: 'DELETE' });
+        showAlert('Berhasil', 'Layanan telah dihapus', 'success');
+        load();
+      }
+    );
   };
 
   // === Filtering ===

@@ -43,7 +43,7 @@ export default function ServicesSection() {
   }, [items]);
 
   return (
-    <section id="services" className="py-40 px-6 bg-[#050505]">
+    <section id="services" className="py-24 px-6 bg-[#050505]">
       <div className="max-w-7xl mx-auto">
         <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-8">
           <div>
@@ -57,13 +57,14 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {items.map((service) => (
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {items.map((service, i) => (
             <ServiceCard
               key={service.id}
-              number={service.number}
+              number={service.number || String(i + 1).padStart(2, '0')}
               title={service.title}
               description={service.description}
+              image_url={service.image_url}
             />
           ))}
         </div>

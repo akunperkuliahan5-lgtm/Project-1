@@ -4,7 +4,7 @@ export default function AboutSection() {
   const contentRef = useScrollReveal();
 
   return (
-    <section id="about" className="py-40 px-6 max-w-7xl mx-auto">
+    <section id="about" className="py-24 px-6 max-w-7xl mx-auto">
       <div className="grid md:grid-cols-2 gap-24 items-start">
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-accent mb-6 block">

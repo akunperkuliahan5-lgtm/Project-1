@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const API = 'http://localhost:3001/api';
+const API = 'http://127.0.0.1:3001/api';
 
 function StatCard({ label, value, icon, color }) {
   return (

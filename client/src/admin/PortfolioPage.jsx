@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useAdminDialog } from './DialogContext';
 
-const API = 'http://localhost:3001/api/portfolio';
+const API = 'http://127.0.0.1:3001/api/portfolio';
 
 function Modal({ item, onClose, onSave }) {
+  const { showAlert } = useAdminDialog();
   const [form, setForm] = useState(
     item || { title: '', description: '', image_url: '', year: '', tag: '' }
   );
@@ -16,6 +18,7 @@ function Modal({ item, onClose, onSave }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     });
+    showAlert('Berhasil', `Proyek berhasil ${item ? 'diperbarui' : 'ditambahkan'}`, 'success');
     onSave();
   };
 
@@ -74,10 +77,18 @@ export default function PortfolioPage() {
   const load = () => fetch(API).then(r => r.json()).then(setItems);
   useEffect(() => { load(); }, []);
 
+  const { showConfirm, showAlert } = useAdminDialog();
+
   const handleDelete = async (id) => {
-    if (!confirm('Hapus proyek ini?')) return;
-    await fetch(`${API}/${id}`, { method: 'DELETE' });
-    load();
+    showConfirm(
+      'Konfirmasi Hapus',
+      'Hapus proyek ini dari portofolio?',
+      async () => {
+        await fetch(`${API}/${id}`, { method: 'DELETE' });
+        showAlert('Berhasil', 'Proyek telah dihapus', 'success');
+        load();
+      }
+    );
   };
 
   return (

@@ -58,7 +58,7 @@ export default function StructureSection() {
   }, [leadership, architecture]);
 
   return (
-    <section id="structure" className="py-40 bg-black">
+    <section id="structure" className="py-24 bg-black">
       <div className="max-w-7xl mx-auto px-6">
         {/* Leadership */}
         <div className="text-center mb-24">
@@ -70,7 +70,7 @@ export default function StructureSection() {
           </h2>
         </div>
 
-        <div ref={leaderRef} className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div ref={leaderRef} className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {leadership.map((person) => (
             <PersonCard
               key={person.id}
@@ -92,7 +92,7 @@ export default function StructureSection() {
             </h2>
           </div>
 
-          <div ref={archRef} className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div ref={archRef} className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {architecture.map((person) => (
               <PersonCard
                 key={person.id}

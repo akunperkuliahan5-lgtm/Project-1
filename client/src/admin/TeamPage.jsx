@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useAdminDialog } from './DialogContext';
 
-const API = 'http://localhost:3001/api/team';
+const API = 'http://127.0.0.1:3001/api/team';
 const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20];
 
 function Modal({ item, onClose, onSave }) {
+  const { showAlert } = useAdminDialog();
   const [form, setForm] = useState(
     item || { name: '', title: '', image_url: '', team_group: 'leadership', sort_order: 1 }
   );
@@ -17,6 +19,7 @@ function Modal({ item, onClose, onSave }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     });
+    showAlert('Berhasil', `Data anggota berhasil ${item ? 'diperbarui' : 'ditambahkan'}`, 'success');
     onSave();
   };
 
@@ -147,10 +150,18 @@ export default function TeamPage() {
   // Reset to page 1 whenever filter/search changes
   useEffect(() => { setCurrentPage(1); }, [filterGroup, searchQuery, itemsPerPage]);
 
+  const { showConfirm, showAlert } = useAdminDialog();
+
   const handleDelete = async (id) => {
-    if (!confirm('Hapus anggota ini?')) return;
-    await fetch(`${API}/${id}`, { method: 'DELETE' });
-    load();
+    showConfirm(
+      'Konfirmasi Hapus',
+      'Hapus anggota ini dari daftar tim?',
+      async () => {
+        await fetch(`${API}/${id}`, { method: 'DELETE' });
+        showAlert('Berhasil', 'Data anggota telah dihapus', 'success');
+        load();
+      }
+    );
   };
 
   // === Filtering ===

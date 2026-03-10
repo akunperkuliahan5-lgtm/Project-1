@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -46,6 +47,12 @@ export default function Navbar() {
         >
           Kontak
         </a>
+        <Link
+          to="/admin/login"
+          className="bg-accent text-black px-5 py-2 font-bold hover:bg-white transition-all text-[10px] uppercase tracking-widest"
+        >
+          Login
+        </Link>
       </div>
 
       {/* Mobile Menu Button */}
@@ -76,6 +83,13 @@ export default function Navbar() {
           >
             Kontak
           </a>
+          <Link
+            to="/admin/login"
+            className="bg-accent text-black px-5 py-2 font-bold hover:bg-white transition-all text-center text-sm uppercase tracking-widest"
+            onClick={() => setMobileOpen(false)}
+          >
+            Login
+          </Link>
         </div>
       )}
     </nav>

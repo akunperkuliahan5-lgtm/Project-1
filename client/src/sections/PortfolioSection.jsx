@@ -64,7 +64,7 @@ export default function PortfolioSection() {
   }, [items]);
 
   return (
-    <section id="portfolio" className="py-40 px-6 bg-[#050505]">
+    <section id="portfolio" className="py-24 px-6 bg-[#050505]">
       <div className="max-w-7xl mx-auto">
         <div className="mb-24">
           <span className="text-xs font-bold uppercase tracking-widest text-accent mb-4 block">
@@ -73,7 +73,7 @@ export default function PortfolioSection() {
           <h2 className="section-title">Proyek Pilihan.</h2>
         </div>
 
-        <div ref={gridRef} className="grid md:grid-cols-2 gap-10">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {items.map((item) => (
             <PortfolioCard
               key={item.id}

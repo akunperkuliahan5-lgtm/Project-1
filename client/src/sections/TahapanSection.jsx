@@ -30,7 +30,7 @@ export default function TahapanSection() {
   const textRef = useScrollReveal({ delay: 0.2 });
 
   return (
-    <section id="tahapan" className="py-40 px-6 bg-black text-white">
+    <section id="tahapan" className="py-24 px-6 bg-black text-white">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
         {/* Left: Phone Mockup */}
         <div ref={phoneRef} className="flex justify-center">
