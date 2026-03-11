@@ -7,17 +7,17 @@ import PersonCard from '../components/PersonCard';
 gsap.registerPlugin(ScrollTrigger);
 
 const fallbackLeadership = [
-  { id: 1, name: 'Alqadri Achmad, S.Kom', title: 'Komisaris', image_url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=600' },
-  { id: 2, name: 'M. Dipta Chandra D.P.M, S.T', title: 'Direktur Utama', image_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600' },
-  { id: 3, name: 'Muh. Raiz Abidin, S.Pd, S.T, M.Pd', title: 'Tim Ahli Lingkungan', image_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600' },
-  { id: 4, name: 'Masri Ridwan, S.Pd, M.Pd', title: 'Tim Ahli Pariwisata', image_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=600' },
+  { id: 1, name: 'Alqadri Achmad, S.Kom', title: 'Komisaris', image_url: '/foto/alqadri.jpeg' },
+  { id: 2, name: 'M. Dipta Chandra D.P.M, S.T', title: 'Direktur Utama', image_url: '/foto/dipta.jpeg' },
+  { id: 3, name: 'Muh. Raiz Abidin, S.Pd, S.T, M.Pd', title: 'Tim Ahli Lingkungan', image_url: '/foto/raiz.jpeg' },
+  { id: 4, name: 'Masri Ridwan, S.Pd, M.Pd', title: 'Tim Ahli Pariwisata', image_url: '/foto/masri.jpeg' },
 ];
 
 const fallbackArchitecture = [
-  { id: 5, name: 'Agus Alim Praya Maknun, S.Ars., M.Ars', title: 'Arsitek', image_url: 'https://images.unsplash.com/photo-1556157382-97dee2dcb04e?q=80&w=600' },
-  { id: 6, name: 'Rahmat Irshal S.Ars', title: 'Arsitek', image_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600' },
-  { id: 7, name: 'Mardis Darwis, S.T., M.T. A.Md.B.Ing', title: 'Tenaga Ahli', image_url: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600' },
-  { id: 8, name: 'Ar. Hardy Marennu, S.T', title: 'Arsitek Profesional', image_url: 'https://images.unsplash.com/photo-1463453091185-61582044d556?q=80&w=600' },
+  { id: 5, name: 'Agus Alim Praya Maknun, S.Ars., M.Ars', title: 'Arsitek', image_url: '/foto/agus.jpeg' },
+  { id: 6, name: 'Rahmat Irshal S.Ars', title: 'Arsitek', image_url: '/foto/rahmat.jpeg' },
+  { id: 7, name: 'Mardis Darwis, S.T., M.T. A.Md.B.Ing', title: 'Tenaga Ahli', image_url: '/foto/mardis.jpeg' },
+  { id: 8, name: 'Ar. Hardy Marennu, S.T', title: 'Arsitek Profesional', image_url: '/foto/hardy.jpeg' },
 ];
 
 export default function StructureSection() {
