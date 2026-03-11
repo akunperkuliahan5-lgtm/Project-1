@@ -8,12 +8,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Fallback data in case API is not available
 const fallbackServices = [
-  { id: 1, number: '01', title: 'Perizinan PBG & SLF', description: 'Penyusunan dokumen teknis untuk mendapatkan Persetujuan Bangunan Gedung & Sertifikat Laik Fungsi resmi.' },
-  { id: 2, number: '02', title: 'AMDAL & UKL-UPL', description: 'Kajian komprehensif dampak lingkungan untuk memastikan operasional bisnis yang berkelanjutan dan legal.' },
-  { id: 3, number: '03', title: 'Digital Branding', description: 'Pengembangan website korporat dan aplikasi kustom untuk memperkuat kehadiran digital entitas bisnis Anda.' },
-  { id: 4, number: '04', title: 'Pariwisata', description: 'Perencanaan destinasi wisata strategis mulai dari masterplan hingga manajemen kunjungan berkelanjutan.' },
-  { id: 5, number: '05', title: 'Redrawing DED', description: 'Digitalisasi dan penyempurnaan Detail Engineering Design untuk akurasi konstruksi yang maksimal.' },
-  { id: 6, number: '06', title: 'Audit Struktur', description: 'Investigasi forensik bangunan untuk menilai kekuatan, keamanan, dan masa pakai struktur gedung.' },
+  { id: 1, number: '01', title: 'Perizinan PBG & SLF', description: 'Penyusunan dokumen teknis untuk mendapatkan Persetujuan Bangunan Gedung & Sertifikat Laik Fungsi resmi.', image_url: '/foto/pbg.png' },
+  { id: 2, number: '02', title: 'AMDAL & UKL-UPL', description: 'Kajian komprehensif dampak lingkungan untuk memastikan operasional bisnis yang berkelanjutan dan legal.', image_url: '/foto/amdal.png' },
+  { id: 3, number: '03', title: 'Digital Branding', description: 'Pengembangan website korporat dan aplikasi kustom untuk memperkuat kehadiran digital entitas bisnis Anda.', image_url: '/foto/digital.png' },
+  { id: 4, number: '04', title: 'Pariwisata', description: 'Perencanaan destinasi wisata strategis mulai dari masterplan hingga manajemen kunjungan berkelanjutan.', image_url: '/foto/tourism.png' },
+  { id: 5, number: '05', title: 'Redrawing DED', description: 'Digitalisasi dan penyempurnaan Detail Engineering Design untuk akurasi konstruksi yang maksimal.', image_url: '/foto/ded.png' },
+  { id: 6, number: '06', title: 'Audit Struktur', description: 'Investigasi forensik bangunan untuk menilai kekuatan, keamanan, dan masa pakai struktur gedung.', image_url: '/foto/audit.png' },
 ];
 
 export default function ServicesSection() {
