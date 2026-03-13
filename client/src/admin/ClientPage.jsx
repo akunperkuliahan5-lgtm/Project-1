@@ -6,7 +6,7 @@ const API = 'http://127.0.0.1:3001/api/clients';
 function Modal({ item, onClose, onSave }) {
   const { showAlert } = useAdminDialog();
   const [form, setForm] = useState(
-    item || { name: '', logo_url: '' }
+    item || { name: '', logo_url: '', website_url: '' }
   );
 
   const handleSubmit = async (e) => {
@@ -39,6 +39,10 @@ function Modal({ item, onClose, onSave }) {
           <div>
             <label className="admin-label">URL Logo</label>
             <input className="admin-input" value={form.logo_url} onChange={e => setForm({...form, logo_url: e.target.value})} placeholder="https://..." required />
+          </div>
+          <div>
+            <label className="admin-label">Website URL (Optional)</label>
+            <input className="admin-input" value={form.website_url} onChange={e => setForm({...form, website_url: e.target.value})} placeholder="https://example.com" />
           </div>
           {form.logo_url && (
             <div>
@@ -93,6 +97,7 @@ export default function ClientPage() {
             <tr className="border-b border-[#1e1e1e]">
               <th className="admin-th w-24">Logo</th>
               <th className="admin-th">Nama Client</th>
+              <th className="admin-th">Website</th>
               <th className="admin-th w-32">Aksi</th>
             </tr>
           </thead>
@@ -105,6 +110,15 @@ export default function ClientPage() {
                   </div>
                 </td>
                 <td className="admin-td font-bold text-white text-sm">{item.name}</td>
+                <td className="admin-td">
+                  {item.website_url ? (
+                    <a href={item.website_url} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline text-xs">
+                      {item.website_url.replace(/^https?:\/\/(www\.)?/, '')}
+                    </a>
+                  ) : (
+                    <span className="text-gray-700 text-xs">—</span>
+                  )}
+                </td>
                 <td className="admin-td">
                   <div className="flex gap-2">
                     <button onClick={() => setModal(item)} className="px-3 py-1 border border-[#333] text-gray-400 text-[10px] uppercase hover:border-accent hover:text-accent transition-all">Edit</button>

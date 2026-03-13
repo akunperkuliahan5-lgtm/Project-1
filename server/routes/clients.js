@@ -16,10 +16,10 @@ router.get('/', (req, res) => {
 // POST create
 router.post('/', (req, res) => {
   try {
-    const { name, logo_url } = req.body;
-    const stmt = db.prepare('INSERT INTO clients (name, logo_url) VALUES (?, ?)');
-    const result = stmt.run(name, logo_url || '');
-    res.status(201).json({ id: result.lastInsertRowid, name, logo_url });
+    const { name, logo_url, website_url } = req.body;
+    const stmt = db.prepare('INSERT INTO clients (name, logo_url, website_url) VALUES (?, ?, ?)');
+    const result = stmt.run(name, logo_url || '', website_url || '');
+    res.status(201).json({ id: result.lastInsertRowid, name, logo_url, website_url });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -28,10 +28,10 @@ router.post('/', (req, res) => {
 // PUT update
 router.put('/:id', (req, res) => {
   try {
-    const { name, logo_url } = req.body;
-    const stmt = db.prepare('UPDATE clients SET name=?, logo_url=? WHERE id=?');
-    stmt.run(name, logo_url || '', req.params.id);
-    res.json({ id: Number(req.params.id), name, logo_url });
+    const { name, logo_url, website_url } = req.body;
+    const stmt = db.prepare('UPDATE clients SET name=?, logo_url=?, website_url=? WHERE id=?');
+    stmt.run(name, logo_url || '', website_url || '', req.params.id);
+    res.json({ id: Number(req.params.id), name, logo_url, website_url });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

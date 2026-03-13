@@ -1,14 +1,72 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAdminDialog } from './DialogContext';
+import Cropper from 'react-easy-crop';
+import { getCroppedImgBlob } from '../utils/cropImage';
+import MediaLibraryModal from './MediaLibraryModal';
 
 const API = 'http://127.0.0.1:3001/api/team';
 const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20];
 
 function Modal({ item, onClose, onSave }) {
   const { showAlert } = useAdminDialog();
+  const fileInputRef = useRef(null);
+
+  // Form states
   const [form, setForm] = useState(
-    item || { name: '', title: '', image_url: '', team_group: 'leadership', sort_order: 1 }
+    item || { name: '', title: '', image_url: '', team_group: 'leadership', sort_order: 1, contact: '', wa: '', ig: '' }
   );
+
+  // Cropping states
+  const [imageSrc, setImageSrc] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [isCropping, setIsCropping] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isMediaOpen, setIsMediaOpen] = useState(false);
+
+  const onCropComplete = useCallback((_, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        setIsCropping(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleApplyCrop = async () => {
+    try {
+      setIsUploading(true);
+      const croppedBlob = await getCroppedImgBlob(imageSrc, croppedAreaPixels);
+
+      const formData = new FormData();
+      formData.append('image', croppedBlob, 'team-member.jpg');
+
+      const res = await fetch(API.replace('/team', '/upload'), {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.imageUrl) {
+        setForm({ ...form, image_url: data.imageUrl });
+        setIsCropping(false);
+        setImageSrc(null);
+      }
+    } catch (e) {
+      console.error(e);
+      showAlert('Error', 'Gagal memproses foto', 'error');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,8 +100,56 @@ function Modal({ item, onClose, onSave }) {
             <input className="admin-input" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="Direktur Utama" required />
           </div>
           <div>
-            <label className="admin-label">URL Foto</label>
-            <input className="admin-input" value={form.image_url} onChange={e => setForm({ ...form, image_url: e.target.value })} placeholder="https://..." />
+            <label className="admin-label">Foto Anggota (Auto-Crop 1:1)</label>
+            <div className="flex gap-4 items-start">
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="w-24 h-24 border-2 border-dashed border-[#333] hover:border-accent flex flex-col items-center justify-center cursor-pointer group transition-all"
+              >
+                {form.image_url ? (
+                  <img src={form.image_url} alt="preview" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
+                ) : (
+                  <>
+                    <span className="text-2xl text-gray-700 group-hover:text-accent">+</span>
+                    <span className="text-[8px] text-gray-600 uppercase font-black group-hover:text-white">Upload</span>
+                  </>
+                )}
+              </div>
+              <div className="flex-1 space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    className="admin-input flex-1"
+                    value={form.image_url}
+                    onChange={e => setForm({ ...form, image_url: e.target.value })}
+                    placeholder="Atau masukkan URL foto..."
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setIsMediaOpen(true)}
+                    className="px-4 bg-[#222] text-gray-400 text-[10px] font-black uppercase tracking-widest hover:bg-accent hover:text-black transition-all border border-[#333]"
+                  >
+                    Media
+                  </button>
+                </div>
+                <p className="text-[10px] text-gray-600 italic">Disarankan menggunakan foto kotak (1:1) agar simetris.</p>
+              </div>
+              <MediaLibraryModal
+                isOpen={isMediaOpen}
+                onClose={() => setIsMediaOpen(false)}
+                onSelect={(url) => {
+                  setForm({ ...form, image_url: url });
+                  setIsMediaOpen(false);
+                }}
+              />
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+              accept="image/*"
+            />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -58,10 +164,84 @@ function Modal({ item, onClose, onSave }) {
               <input type="number" className="admin-input" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: Number(e.target.value) })} min="1" />
             </div>
           </div>
-          {form.image_url && (
-            <div className="flex items-center gap-4">
-              <img src={form.image_url} alt="preview" className="w-16 h-16 object-cover rounded-full border border-[#333] grayscale" onError={e => { e.target.style.display = 'none'; }} />
-              <p className="text-gray-600 text-xs">Preview foto</p>
+
+          <div className="space-y-4 border-t border-[#222] pt-6">
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Sosial Media</h3>
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <label className="admin-label">Email / Contact</label>
+                <input className="admin-input" value={form.contact} onChange={e => setForm({ ...form, contact: e.target.value })} placeholder="email@example.com" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="admin-label">WhatsApp (No HP)</label>
+                  <input className="admin-input" value={form.wa} onChange={e => setForm({ ...form, wa: e.target.value })} placeholder="628123456789" />
+                </div>
+                <div>
+                  <label className="admin-label">Instagram (Username)</label>
+                  <input className="admin-input" value={form.ig} onChange={e => setForm({ ...form, ig: e.target.value })} placeholder="username_ig" />
+                </div>
+              </div>
+            </div>
+          </div>
+          {isCropping && (
+            <div className="fixed inset-0 bg-black z-[60] flex flex-col">
+              <div className="p-4 bg-[#111] border-b border-[#222] flex justify-between items-center">
+                <h3 className="text-white text-xs font-black uppercase tracking-widest">Sesuaikan Foto</h3>
+                <button
+                  type="button"
+                  onClick={() => setIsCropping(false)}
+                  className="text-gray-500 hover:text-white"
+                >✕</button>
+              </div>
+              <div className="flex-1 relative bg-[#0a0a0a]">
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={1 / 1}
+                  onCropChange={setCrop}
+                  onCropComplete={onCropComplete}
+                  onZoomChange={setZoom}
+                  cropShape="round"
+                  showGrid={false}
+                />
+              </div>
+              <div className="p-8 bg-[#111] border-t border-[#222] space-y-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Zoom</span>
+                    <span className="text-[10px] text-accent font-mono">{Math.round(zoom * 100)}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    value={zoom}
+                    min={1}
+                    max={3}
+                    step={0.1}
+                    aria-labelledby="Zoom"
+                    onChange={(e) => setZoom(e.target.value)}
+                    className="w-full accent-accent h-1 bg-[#222] rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    type="button"
+                    disabled={isUploading}
+                    onClick={handleApplyCrop}
+                    className="flex-1 py-4 bg-accent text-black font-black text-xs uppercase tracking-widest hover:bg-white transition-all disabled:opacity-50"
+                  >
+                    {isUploading ? 'Memproses...' : 'Potong & Simpan'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsCropping(false)}
+                    className="px-8 py-4 border border-[#333] text-gray-400 text-xs font-bold uppercase hover:border-white transition-all"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </div>
             </div>
           )}
           <div className="flex gap-3 pt-2">
@@ -108,11 +288,10 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`w-9 h-9 flex items-center justify-center border text-xs font-bold transition-all ${
-              currentPage === page
-                ? 'border-accent bg-accent/10 text-accent'
-                : 'border-[#333] text-gray-500 hover:border-accent hover:text-accent'
-            }`}
+            className={`w-9 h-9 flex items-center justify-center border text-xs font-bold transition-all ${currentPage === page
+              ? 'border-accent bg-accent/10 text-accent'
+              : 'border-[#333] text-gray-500 hover:border-accent hover:text-accent'
+              }`}
           >
             {page}
           </button>
@@ -213,11 +392,10 @@ export default function TeamPage() {
             <button
               key={g.key}
               onClick={() => setFilterGroup(g.key)}
-              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest border transition-all flex items-center gap-2 ${
-                filterGroup === g.key
-                  ? 'bg-accent text-black border-accent'
-                  : 'border-[#333] text-gray-500 hover:border-gray-500 hover:text-gray-300'
-              }`}
+              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest border transition-all flex items-center gap-2 ${filterGroup === g.key
+                ? 'bg-accent text-black border-accent'
+                : 'border-[#333] text-gray-500 hover:border-gray-500 hover:text-gray-300'
+                }`}
             >
               {g.label}
               <span className={`text-[9px] px-1.5 py-0.5 rounded-sm font-black ${filterGroup === g.key ? 'bg-black/20' : 'bg-white/5'}`}>
@@ -283,6 +461,7 @@ export default function TeamPage() {
               <th className="admin-th">Jabatan</th>
               <th className="admin-th hidden md:table-cell w-28">Grup</th>
               <th className="admin-th hidden lg:table-cell w-16">Urutan</th>
+              <th className="admin-th w-20">Sosial</th>
               <th className="admin-th w-32">Aksi</th>
             </tr>
           </thead>
@@ -306,16 +485,29 @@ export default function TeamPage() {
                 <td className="admin-td font-bold text-white text-sm">{item.name}</td>
                 <td className="admin-td text-gray-400 text-xs">{item.title}</td>
                 <td className="admin-td hidden md:table-cell">
-                  <span className={`text-[9px] px-2 py-0.5 uppercase font-bold border ${
-                    item.team_group === 'leadership'
-                      ? 'border-accent/40 text-accent'
-                      : 'border-gray-700 text-gray-500'
-                  }`}>
+                  <span className={`text-[9px] px-2 py-0.5 uppercase font-bold border ${item.team_group === 'leadership'
+                    ? 'border-accent/40 text-accent'
+                    : 'border-gray-700 text-gray-500'
+                    }`}>
                     {item.team_group === 'leadership' ? 'Leadership' : 'Arsitektur'}
                   </span>
                 </td>
                 <td className="admin-td hidden lg:table-cell text-gray-600 text-xs font-mono">
                   #{item.sort_order}
+                </td>
+                <td className="admin-td">
+                  <div className="flex gap-1.5">
+                    {item.contact && (
+                      <div className="w-5 h-5 rounded-full bg-[#222] flex items-center justify-center text-[10px] text-accent" title={item.contact}>✉</div>
+                    )}
+                    {item.wa && (
+                      <div className="w-5 h-5 rounded-full bg-[#222] flex items-center justify-center text-[10px] text-green-500" title={item.wa}>WA</div>
+                    )}
+                    {item.ig && (
+                      <div className="w-5 h-5 rounded-full bg-[#222] flex items-center justify-center text-[10px] text-pink-500" title={item.ig}>IG</div>
+                    )}
+                    {!item.contact && !item.wa && !item.ig && <span className="text-gray-800">—</span>}
+                  </div>
                 </td>
                 <td className="admin-td">
                   <div className="flex gap-2">

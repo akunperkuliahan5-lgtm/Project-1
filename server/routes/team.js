@@ -18,10 +18,10 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   try {
-    const { name, title, image_url, team_group, sort_order } = req.body;
-    const stmt = db.prepare('INSERT INTO team_members (name, title, image_url, team_group, sort_order) VALUES (?, ?, ?, ?, ?)');
-    const result = stmt.run(name, title, image_url, team_group, sort_order || 0);
-    res.status(201).json({ id: result.lastInsertRowid, name, title, image_url, team_group });
+    const { name, title, image_url, team_group, sort_order, contact, wa, ig } = req.body;
+    const stmt = db.prepare('INSERT INTO team_members (name, title, image_url, team_group, sort_order, contact, wa, ig) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+    const result = stmt.run(name, title, image_url, team_group, sort_order || 0, contact || '', wa || '', ig || '');
+    res.status(201).json({ id: result.lastInsertRowid, name, title, image_url, team_group, contact, wa, ig });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -29,10 +29,10 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   try {
-    const { name, title, image_url, team_group, sort_order } = req.body;
-    db.prepare('UPDATE team_members SET name=?, title=?, image_url=?, team_group=?, sort_order=? WHERE id=?')
-      .run(name, title, image_url, team_group, sort_order || 0, req.params.id);
-    res.json({ id: Number(req.params.id), name, title, image_url, team_group });
+    const { name, title, image_url, team_group, sort_order, contact, wa, ig } = req.body;
+    db.prepare('UPDATE team_members SET name=?, title=?, image_url=?, team_group=?, sort_order=?, contact=?, wa=?, ig=? WHERE id=?')
+      .run(name, title, image_url, team_group, sort_order || 0, contact || '', wa || '', ig || '', req.params.id);
+    res.json({ id: Number(req.params.id), name, title, image_url, team_group, contact, wa, ig });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

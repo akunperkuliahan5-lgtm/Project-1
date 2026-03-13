@@ -39,6 +39,9 @@ db.exec(`
     image_url TEXT,
     team_group TEXT NOT NULL,
     sort_order INTEGER DEFAULT 0,
+    contact TEXT,
+    wa TEXT,
+    ig TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
@@ -48,6 +51,7 @@ db.exec(`
     title TEXT NOT NULL,
     excerpt TEXT NOT NULL,
     content TEXT,
+    thumbnail_url TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
@@ -55,6 +59,17 @@ db.exec(`
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     logo_url TEXT NOT NULL,
+    website_url TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS media (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    original_name TEXT NOT NULL,
+    mime_type TEXT,
+    size INTEGER,
+    url TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 `);

@@ -24,6 +24,7 @@ import PortfolioPage from './admin/PortfolioPage';
 import TeamPage from './admin/TeamPage';
 import BlogPage from './admin/BlogPage';
 import ClientPage from './admin/ClientPage';
+import MediaPage from './admin/MediaPage';
 
 function HomePage() {
   return (
@@ -69,6 +70,7 @@ function App() {
           <Route path="team" element={<TeamPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="clients" element={<ClientPage />} />
+          <Route path="media" element={<MediaPage />} />
         </Route>
 
         {/* Catch-all */}

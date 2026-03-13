@@ -77,6 +77,9 @@ export default function StructureSection() {
               name={person.name}
               title={person.title}
               imageUrl={person.image_url}
+              contact={person.contact}
+              wa={person.wa}
+              ig={person.ig}
             />
           ))}
         </div>
@@ -99,6 +102,9 @@ export default function StructureSection() {
                 name={person.name}
                 title={person.title}
                 imageUrl={person.image_url}
+                contact={person.contact}
+                wa={person.wa}
+                ig={person.ig}
               />
             ))}
           </div>

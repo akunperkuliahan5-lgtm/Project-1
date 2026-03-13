@@ -25,12 +25,24 @@ export default function ClientMarquee() {
     <div className="marquee-wrapper">
       <div className="marquee-group">
         {clients.map((client, i) => (
-          <img key={`g1-${i}`} src={client.logo_url} className="client-logo h-8" alt={client.name} title={client.name} />
+          client.website_url ? (
+            <a key={`g1-${i}`} href={client.website_url} target="_blank" rel="noopener noreferrer" className="block">
+              <img src={client.logo_url} className="client-logo h-8" alt={client.name} title={client.name} />
+            </a>
+          ) : (
+            <img key={`g1-${i}`} src={client.logo_url} className="client-logo h-8" alt={client.name} title={client.name} />
+          )
         ))}
       </div>
       <div className="marquee-group">
         {clients.map((client, i) => (
-          <img key={`g2-${i}`} src={client.logo_url} className="client-logo h-8" alt={client.name} title={client.name} />
+          client.website_url ? (
+            <a key={`g2-${i}`} href={client.website_url} target="_blank" rel="noopener noreferrer" className="block">
+              <img src={client.logo_url} className="client-logo h-8" alt={client.name} title={client.name} />
+            </a>
+          ) : (
+            <img key={`g2-${i}`} src={client.logo_url} className="client-logo h-8" alt={client.name} title={client.name} />
+          )
         ))}
       </div>
     </div>

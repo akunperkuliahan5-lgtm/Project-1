@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { useAdminDialog } from './DialogContext';
+import MediaLibraryModal from './MediaLibraryModal';
 
 const API = 'http://127.0.0.1:3001/api/portfolio';
 
@@ -8,6 +8,7 @@ function Modal({ item, onClose, onSave }) {
   const [form, setForm] = useState(
     item || { title: '', description: '', image_url: '', year: '', tag: '' }
   );
+  const [isMediaOpen, setIsMediaOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,30 +35,52 @@ function Modal({ item, onClose, onSave }) {
         <form onSubmit={handleSubmit} className="p-8 space-y-5">
           <div>
             <label className="admin-label">Judul</label>
-            <input className="admin-input" value={form.title} onChange={e => setForm({...form, title: e.target.value})} placeholder="Nama proyek" required />
+            <input className="admin-input" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="Nama proyek" required />
           </div>
           <div>
             <label className="admin-label">Deskripsi</label>
-            <textarea className="admin-input h-20 resize-none" value={form.description} onChange={e => setForm({...form, description: e.target.value})} placeholder="Deskripsi proyek..." required />
+            <textarea className="admin-input h-20 resize-none" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Deskripsi proyek..." required />
           </div>
           <div>
-            <label className="admin-label">URL Gambar</label>
-            <input className="admin-input" value={form.image_url} onChange={e => setForm({...form, image_url: e.target.value})} placeholder="https://..." />
+            <label className="admin-label">Gambar Proyek</label>
+            <div className="flex gap-2">
+              <input
+                className="admin-input flex-1"
+                value={form.image_url}
+                onChange={e => setForm({ ...form, image_url: e.target.value })}
+                placeholder="https://..."
+              />
+              <button
+                type="button"
+                onClick={() => setIsMediaOpen(true)}
+                className="px-4 bg-[#222] text-gray-400 text-[10px] font-black uppercase tracking-widest hover:bg-accent hover:text-black transition-all border border-[#333]"
+              >
+                Pilih Media
+              </button>
+            </div>
+            <MediaLibraryModal
+              isOpen={isMediaOpen}
+              onClose={() => setIsMediaOpen(false)}
+              onSelect={(url) => {
+                setForm({ ...form, image_url: url });
+                setIsMediaOpen(false);
+              }}
+            />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="admin-label">Tahun</label>
-              <input className="admin-input" value={form.year} onChange={e => setForm({...form, year: e.target.value})} placeholder="2024" />
+              <input className="admin-input" value={form.year} onChange={e => setForm({ ...form, year: e.target.value })} placeholder="2024" />
             </div>
             <div>
               <label className="admin-label">Tag</label>
-              <input className="admin-input" value={form.tag} onChange={e => setForm({...form, tag: e.target.value})} placeholder="2024 / APP / MONITOR" />
+              <input className="admin-input" value={form.tag} onChange={e => setForm({ ...form, tag: e.target.value })} placeholder="2024 / APP / MONITOR" />
             </div>
           </div>
           {form.image_url && (
             <div>
               <label className="admin-label">Preview</label>
-              <img src={form.image_url} alt="preview" className="w-full h-32 object-cover border border-[#333]" onError={e => { e.target.style.display='none'; }} />
+              <img src={form.image_url} alt="preview" className="w-full h-32 object-cover border border-[#333]" onError={e => { e.target.style.display = 'none'; }} />
             </div>
           )}
           <div className="flex gap-3 pt-2">
